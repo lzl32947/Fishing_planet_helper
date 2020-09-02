@@ -17,6 +17,8 @@ pysimplegui
 ## 程序功能
 程序目前仅提供在Alberta秒提狗鱼/大西洋鲑鱼的功能。
 
+程序正在Michigan渔场进行测试。
+
 
 ## 如何运行：
 进入游戏，将游戏分辨率设置为```1280×720```，关闭全屏幕模式，将指示器调至三列版本，到达指定位置，如有可能请将特效调节至最低。
@@ -34,6 +36,14 @@ pysimplegui
 测试时使用的位置如下：
 
 ![Position in Alberta](image/readme/position_in_alberta.png "Position")
+
+程序正在Michigan进行测试。测试使用的渔具为：
+
+![Equipment in Alberta](image/readme/equipment_in_michigan.png "Equipment")
+
+测试使用的位置如下：
+
+![Position in Alberta](image/readme/position_in_michigan.png "Position")
 
 ## 程序日志
 

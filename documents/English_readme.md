@@ -20,6 +20,8 @@ pysimplegui
 
 At present, the program only provides the function of raising pike / Atlantic salmon in Alberta.
 
+The program is being tested in Michigan.
+
 
 
 
@@ -41,6 +43,13 @@ The positions used in the test are as follows:
 
 ![Position in Alberta](./../image/readme/position_in_alberta.png "Position")
 
+The program is being tested in Michigan. The fishing gear used in the test is as follows:
+
+![Equipment in Michigan](./../image/readme/equipment_in_michigan.png "Equipment")
+
+The positions used in the test are as follows:
+
+![Position in Alberta](./../image/readme/position_in_michigan.png "Position")
 
 
 ## Program log
