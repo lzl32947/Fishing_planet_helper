@@ -1,7 +1,6 @@
 import PySimpleGUI as sg
 
 from dependence.utils.hwnd_util import list_all_hwnd
-from dependence.utils.image_process_util import crop_screenshot_by_class
 from dependence.utils.screenshot_util import take_screenshot_of_program_using_win32api
 
 

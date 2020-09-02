@@ -3,20 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 import cv2
-from configs.file_configs import IMAGE_CROP_DIR
-from configs.image_config import CropArea, CropImage
-
-
-def crop_screenshot_by_class(file_path: str, crop_image: CropImage, save_image=False, use_custom_name=False,
-                             custom_name=None):
-    img = Image.open(file_path)
-    cropped = img.crop(crop_image.crop_area.area_tuple)
-    if save_image:
-        if not use_custom_name:
-            cropped.save(os.path.join(IMAGE_CROP_DIR, crop_image.save_name + ".png"))
-        else:
-            cropped.save(os.path.join(IMAGE_CROP_DIR, custom_name + ".png"))
-    return cropped
 
 
 def crop_screenshot_by_tuple(file_path: str, crop_area: tuple, image_save_path: str):
