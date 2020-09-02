@@ -61,6 +61,7 @@ def run():
                     maxes = diff_list[k]
         if maxes < 0.7:
             logger.debug("Seems be water, no meter indicator found.")
+            continue
         else:
             logger.info("Meter: {}, possibility:{}".format(index, maxes))
 
@@ -100,7 +101,7 @@ def run():
         # Compare with the blue line
         d = image_diff(image, global_configs.wheel_image)
         # logger.debug("Image diff result for wheel:{}.".format(d))
-        if d > 0.3:
+        if d > 0.5:
 
             # Lift the rod
             logger.debug("Catch fish.")

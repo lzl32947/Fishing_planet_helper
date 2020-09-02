@@ -38,6 +38,7 @@ def run():
     # Too easy to throw more than 10m
     too_far_flag = True
     while too_far_flag:
+        time.sleep(0.5)
         maxes = 0
         index = 0
         for i in range(0, 3):
@@ -54,7 +55,7 @@ def run():
                          image_diff(grey_image, global_configs.digit_7_image, function="phash"),
                          image_diff(grey_image, global_configs.digit_8_image, function="phash"),
                          image_diff(grey_image, global_configs.digit_9_image, function="phash")]
-            logger.info("{}th Compare meter digit result:{}".format(i + 1, diff_list))
+            # logger.info("{}th Compare meter digit result:{}".format(i + 1, diff_list))
 
             for k in range(0, len(diff_list)):
                 if diff_list[k] > maxes:
@@ -62,6 +63,8 @@ def run():
                     maxes = diff_list[k]
         if maxes < 0.7:
             logger.debug("Seems be water, no meter indicator found.")
+            time.sleep(0.5)
+            continue
         else:
             logger.info("Meter: {}, possibility:{}".format(index, maxes))
 
@@ -101,7 +104,7 @@ def run():
         # Compare with the blue line
         d = image_diff(image, global_configs.wheel_image)
         # logger.debug("Image diff result for wheel:{}.".format(d))
-        if d > 0.3:
+        if d > 0.5:
 
             # Lift the rod
             logger.debug("Catch fish.")
