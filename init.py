@@ -7,11 +7,24 @@ from log import logger
 
 
 def init_ram():
-    global_configs.wheel_image = Image.open("image/wheel.png")
-    global_configs.get_image = Image.open("image/get.png")
-    global_configs.full_image = Image.open("image/full.png")
-    global_configs.special_event_image = Image.open("image/special_event.png")
-    global_configs.xp_confirm_image = Image.open("image/xp.png")
+    global_configs.wheel_image = Image.open("image/buttons/wheel.png")
+    global_configs.get_image = Image.open("image/buttons/get.png")
+    global_configs.full_image = Image.open("image/buttons/full.png")
+    global_configs.special_event_image = Image.open("image/buttons/special_event.png")
+    global_configs.xp_confirm_image = Image.open("image/buttons/xp.png")
+
+    global_configs.digit_0_image = Image.open("image/distance/0_grey.png")
+    global_configs.digit_1_image = Image.open("image/distance/1_grey.png")
+    global_configs.digit_2_image = Image.open("image/distance/2_grey.png")
+    global_configs.digit_3_image = Image.open("image/distance/3_grey.png")
+    global_configs.digit_4_image = Image.open("image/distance/4_grey.png")
+    global_configs.digit_5_image = Image.open("image/distance/5_grey.png")
+    global_configs.digit_6_image = Image.open("image/distance/6_grey.png")
+    global_configs.digit_7_image = Image.open("image/distance/7_grey.png")
+    global_configs.digit_8_image = Image.open("image/distance/8_grey.png")
+    global_configs.digit_9_image = Image.open("image/distance/9_grey.png")
+
+
 
 
 init_ram()

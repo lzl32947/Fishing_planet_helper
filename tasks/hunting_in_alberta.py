@@ -9,7 +9,7 @@ from PIL import Image, ImageGrab
 from dependence.utils.keyboard_util import KeyboardAction
 from log import logger
 import global_configs
-from dependence.utils.image_process_util import crop_screenshot_by_tuple, image_diff
+from dependence.utils.image_process_util import crop_screenshot_by_tuple, image_diff, rgb2grey
 from dependence.utils.mouse_util import MouseAction
 from dependence.utils.screenshot_util import take_screenshot_of_program_using_win32api, \
     take_screenshot_of_desktop_using_PIL
@@ -31,8 +31,53 @@ def run():
     # Limited the fishing line
     MouseAction.left_long_click(200, 200, global_configs.Alberta_floating_straining_line_time)
 
+    x = global_configs.windows_x
+    y = global_configs.windows_y
+
     # Check if suitable for the line to fish
     # TODO: Add compare function that compare to the fishing rod to "7" meters
+    max = 0
+    index = 0
+    for i in range(0, 3):
+        image = take_screenshot_of_desktop_using_PIL(window_x=x, window_y=y, relative_crop_box=(1031, 652, 1031+34, 652+49))
+        grey_image = rgb2grey(image)
+        diff_list = [image_diff(grey_image, global_configs.digit_0_image, function="phash"),
+                     image_diff(grey_image, global_configs.digit_1_image, function="phash"),
+                     image_diff(grey_image, global_configs.digit_2_image, function="phash"),
+                     image_diff(grey_image, global_configs.digit_3_image, function="phash"),
+                     image_diff(grey_image, global_configs.digit_4_image, function="phash"),
+                     image_diff(grey_image, global_configs.digit_5_image, function="phash"),
+                     image_diff(grey_image, global_configs.digit_6_image, function="phash"),
+                     image_diff(grey_image, global_configs.digit_7_image, function="phash"),
+                     image_diff(grey_image, global_configs.digit_8_image, function="phash"),
+                     image_diff(grey_image, global_configs.digit_9_image, function="phash")]
+        logger.info("{}th Compare meter digit result:{}".format(i + 1, diff_list))
+
+        for i in range(0, len(diff_list)):
+            if diff_list[i] > max:
+                index = i
+                max = diff_list[i]
+    if max < 0.7:
+        logger.debug("Seems be water, no meter indicator found.")
+    else:
+        logger.info("Meter: {}, possibility:{}".format(index, max))
+
+    if index < 6 and index != 1:
+        # Meter not good ,release
+        MouseAction.left_long_click(200, 200, 4)
+        time.sleep(5)
+        return
+    elif index == 8:
+        # A little long
+        MouseAction.left_long_click(200, 200, 0.2)
+        time.sleep(1)
+    elif index == 9:
+        # More longer
+        MouseAction.left_long_click(200, 200, 0.5)
+        time.sleep(1)
+    elif index == 1:
+        MouseAction.left_long_click(200, 200, 1)
+        time.sleep(1)
 
     # jump flag
     jump_flag = False
@@ -40,14 +85,8 @@ def run():
     max_time = global_configs.Alberta_max_waiting_time / 0.2
     # Waiting the fish to get in
     while max_time > 0:
-        # Get the image of the wheel
-        # TODO: Add function to get the wheel image
-        # take_screenshot_of_program_using_win32api(hwnd, "screenshot.png")
-        # print("create screenshot")
-        # crop_screenshot_by_tuple("../image/screenshot.png", (1214, 560, 1238, 566), "../image/wheel_image.png")
 
-        x = global_configs.windows_x
-        y = global_configs.windows_y
+        # Get the image of the wheel
         image = take_screenshot_of_desktop_using_PIL(window_x=x, window_y=y, relative_crop_box=(1214, 560, 1238, 566))
 
         # Compare with the blue line

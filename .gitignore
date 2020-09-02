@@ -1,4 +1,5 @@
-.idea
+.idea/
+log/
 place_cursor.py
 take_screenshot.py
-log
+image_process.py

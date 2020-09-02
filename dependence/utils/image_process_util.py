@@ -1,7 +1,7 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
+from PIL import Image, ImageEnhance
 import cv2
 
 
@@ -12,10 +12,45 @@ def crop_screenshot_by_tuple(file_path: str, crop_area: tuple, image_save_path: 
 
 
 def image_diff(raw_image: Image, other_image: Image, function: str = None):
-    raw_image = np.array(raw_image)
-    other_image = np.array(other_image)
+    def _phash(img1, img2):
+        img1 = np.array(img1)
+        img2 = np.array(img2)
+
+        def _calculate_hash(img):
+            assert len(img.shape) == 2
+            img = cv2.resize(img, (32, 32))
+            dct = cv2.dct(np.float32(img))
+            dct_roi = dct[0:8, 0:8]
+            _hash = []
+            average = np.mean(dct_roi)
+            for i in range(dct_roi.shape[0]):
+                for j in range(dct_roi.shape[1]):
+                    if dct_roi[i, j] > average:
+                        _hash.append(1)
+                    else:
+                        _hash.append(0)
+            return _hash
+
+        hash1 = _calculate_hash(img1)
+        hash2 = _calculate_hash(img2)
+        n = 0
+        if len(hash1) != len(hash2):
+            return -1
+        for i in range(len(hash1)):
+            if hash1[i] != hash2[i]:
+                n = n + 1
+        return (64 - n) / 64
 
     def _hist(img1, img2):
+        img1 = np.array(img1)
+        img2 = np.array(img2)
+
+        if len(img1.shape) == 2:
+            img1 = np.expand_dims(img1, -1)
+            img1 = np.tile(img1, (1, 1, 3))
+        if len(img2.shape) == 2:
+            img2 = np.expand_dims(img2, -1)
+            img2 = np.tile(img2, (1, 1, 3))
         H1 = cv2.calcHist([img1], [1], None, [256], [0, 256])
         H1 = cv2.normalize(H1, H1, 0, 1, cv2.NORM_MINMAX, -1)
 
@@ -23,11 +58,13 @@ def image_diff(raw_image: Image, other_image: Image, function: str = None):
         H2 = cv2.normalize(H2, H2, 0, 1, cv2.NORM_MINMAX, -1)
         return cv2.compareHist(H1, H2, 0)
 
-    if raw_image.shape != other_image.shape:
+    if raw_image.size != other_image.size:
         raise RuntimeWarning("Warning: image shape not equal !")
     else:
         if function is None or function.lower() == "hist":
             return _hist(raw_image, other_image)
+        elif function.lower() == "phash":
+            return _phash(raw_image, other_image)
 
 
 def find_pattern_in_image(raw_image_path: str, pattern_path: str, function: str = None, threshold: float = 0.5,
@@ -107,3 +144,12 @@ def find_pattern_in_image(raw_image_path: str, pattern_path: str, function: str 
         plt.show()
         plt.close()
     return box, conf
+
+
+def rgb2grey(im: Image):
+    bright = ImageEnhance.Brightness(im)
+    im = bright.enhance(2)
+    contr = ImageEnhance.Contrast(im)
+    im = contr.enhance(2)
+    im = im.convert('L')
+    return im
