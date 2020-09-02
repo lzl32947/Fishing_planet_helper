@@ -1,7 +1,6 @@
 import sys
 import time
 
-import pytesseract
 import win32api
 import win32con
 import win32gui
@@ -38,8 +37,9 @@ def run():
     # jump flag
     jump_flag = False
 
+    max_time = global_configs.Alberta_max_waiting_time / 0.2
     # Waiting the fish to get in
-    while True:
+    while max_time > 0:
         # Get the image of the wheel
         # TODO: Add function to get the wheel image
         # take_screenshot_of_program_using_win32api(hwnd, "screenshot.png")
@@ -53,7 +53,7 @@ def run():
         # Compare with the blue line
         d = image_diff(image, global_configs.wheel_image)
         logger.debug("Image diff result for wheel:{}.".format(d))
-        if d > 0.4:
+        if d > 0.3:
 
             # Lift the rod
             logger.debug("Catch fish.")
@@ -63,6 +63,13 @@ def run():
             break
         else:
             time.sleep(0.2)
+            max_time -= 1
+
+    # Wait for too long, abandon this fish rod
+    if max_time == 0:
+        logger.info("Too long time pass, re-throw the rod.")
+        MouseAction.left_long_click(200, 200, 5)
+        return
 
     # Check if success
     time.sleep(8)
@@ -72,7 +79,7 @@ def run():
                                                  relative_crop_box=(670, 633, 670 + 160, 633 + 40))
 
     d = image_diff(global_configs.get_image, image)
-    if d > 0.75:
+    if d > 0.5:
 
         # Catch the fish
         time.sleep(3)
@@ -85,9 +92,13 @@ def run():
         # The fish caught but full
         f = image_diff(global_configs.full_image, image)
         logger.debug("Image diff result for full:{}.".format(f))
-        if f > 0.75:
+        if f > 0.5:
             logger.info("Full! Jump time.")
             jump_flag = True
+            logger.debug("Set cursor in {}, {}.".format(x + 570, y + 650))
+            MouseAction.click_with_delay(x + 570, y + 650)
+            logger.debug("Finish click.")
+            time.sleep(4)
         # else:
         #     logger.debug("Await for command.")
         #     sys.exit(1)
@@ -98,7 +109,7 @@ def run():
                                                  relative_crop_box=(257, 527, 257 + 200, 527 + 50))
     f = image_diff(global_configs.special_event_image, image)
     logger.debug("Image diff result for special events:{}.".format(f))
-    if f > 0.7:
+    if f > 0.5:
         # Have special event
         logger.info("Trigger special event.")
         logger.debug("Set cursor in {}, {}.".format(x + 350, y + 550))
