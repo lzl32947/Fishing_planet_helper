@@ -18,18 +18,18 @@ from gui.hwnd_select_gui import show_all_hwnd_select_gui
 
 def run():
     win32gui.SetForegroundWindow(global_configs.hwnd)
-    time.sleep(global_configs.Alberta_inner_wait_time)
+    time.sleep(global_configs.Michigan_inner_wait_time)
     # compare image to know whether to use F11 or not
     # TODO: Add function to compare
     # mouse move to the top
     # TODO: Move mouse to the top
 
     # Click to throw
-    MouseAction.left_long_click(200, 200, global_configs.Alberta_floating_throwing_time)
+    MouseAction.left_long_click(200, 200, global_configs.Michigan_floating_throwing_time)
     # Wait a few seconds
-    time.sleep(global_configs.Alberta_floating_after_throwing_waiting_time)
+    time.sleep(global_configs.Michigan_floating_after_throwing_waiting_time)
     # Limited the fishing line
-    MouseAction.left_long_click(200, 200, global_configs.Alberta_floating_straining_line_time)
+    MouseAction.left_long_click(200, 200, global_configs.Michigan_floating_straining_line_time)
 
     x = global_configs.windows_x
     y = global_configs.windows_y
@@ -55,6 +55,7 @@ def run():
                          image_diff(grey_image, global_configs.digit_8_image, function="phash"),
                          image_diff(grey_image, global_configs.digit_9_image, function="phash")]
             logger.info("{}th Compare meter digit result:{}".format(i + 1, diff_list))
+
             for k in range(0, len(diff_list)):
                 if diff_list[k] > maxes:
                     index = k
@@ -90,7 +91,7 @@ def run():
     # jump flag
     jump_flag = False
 
-    max_time = global_configs.Alberta_max_waiting_time / 0.2
+    max_time = global_configs.Michigan_max_waiting_time / 0.2
     # Waiting the fish to get in
     while max_time > 0:
 
@@ -104,8 +105,9 @@ def run():
 
             # Lift the rod
             logger.debug("Catch fish.")
-            MouseAction.hold_on_right_then_left(200, 200, right_hold_time=global_configs.Alberta_floating_lift_rod_time,
-                                                both_hold_time=global_configs.Alberta_floating_lift_fish_time)
+            MouseAction.hold_on_right_then_left(200, 200,
+                                                right_hold_time=global_configs.Michigan_floating_lift_rod_time,
+                                                both_hold_time=global_configs.Michigan_floating_lift_fish_time)
             logger.info("Catch fish finish.")
             break
         else:
