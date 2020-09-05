@@ -11,7 +11,7 @@ def crop_screenshot_by_tuple(file_path: str, crop_area: tuple, image_save_path: 
     cropped.save(image_save_path)
 
 
-def image_diff(raw_image: Image, other_image: Image, function: str = None):
+def image_diff(raw_image: Image, other_image: Image, function: str = None, channel=2):
     def _phash(img1, img2):
         img1 = np.array(img1)
         img2 = np.array(img2)
@@ -41,7 +41,7 @@ def image_diff(raw_image: Image, other_image: Image, function: str = None):
                 n = n + 1
         return (64 - n) / 64
 
-    def _hist(img1, img2):
+    def _hist(img1, img2,channel):
         img1 = np.array(img1)
         img2 = np.array(img2)
 
@@ -51,10 +51,10 @@ def image_diff(raw_image: Image, other_image: Image, function: str = None):
         if len(img2.shape) == 2:
             img2 = np.expand_dims(img2, -1)
             img2 = np.tile(img2, (1, 1, 3))
-        H1 = cv2.calcHist([img1], [1], None, [256], [0, 256])
+        H1 = cv2.calcHist([img1], [channel], None, [256], [0, 256])
         H1 = cv2.normalize(H1, H1, 0, 1, cv2.NORM_MINMAX, -1)
 
-        H2 = cv2.calcHist([img2], [1], None, [256], [0, 256])
+        H2 = cv2.calcHist([img2], [channel], None, [256], [0, 256])
         H2 = cv2.normalize(H2, H2, 0, 1, cv2.NORM_MINMAX, -1)
         return cv2.compareHist(H1, H2, 0)
 
@@ -62,7 +62,7 @@ def image_diff(raw_image: Image, other_image: Image, function: str = None):
         raise RuntimeWarning("Warning: image shape not equal !")
     else:
         if function is None or function.lower() == "hist":
-            return _hist(raw_image, other_image)
+            return _hist(raw_image, other_image,channel)
         elif function.lower() == "phash":
             return _phash(raw_image, other_image)
 

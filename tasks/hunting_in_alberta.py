@@ -182,6 +182,7 @@ def run():
     else:
         logger.info("Continue level.")
 
+    # Jump time
     if jump_flag:
         logger.info("Jump time start.")
         KeyboardAction.press_and_release(0x54)
@@ -204,3 +205,4 @@ def run():
         time.sleep(5)
         logger.info("Continue Fishing.")
         jump_flag = False
+

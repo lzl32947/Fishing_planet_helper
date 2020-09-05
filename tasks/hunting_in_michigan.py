@@ -175,7 +175,7 @@ def run():
     image = take_screenshot_of_desktop_using_PIL(window_x=x, window_y=y,
                                                  relative_crop_box=(355, 616, 355 + 200, 616 + 50))
     f = image_diff(global_configs.special_event_image, image)
-    logger.debug("Image diff result for special events:{}.".format(f))
+    logger.debug("Image diff result for level up events 1:{}.".format(f))
     if f > 0.7:
         logger.info("Trigger level UP.")
         # Have special event
@@ -184,8 +184,21 @@ def run():
         logger.debug("Finish click.")
         time.sleep(4)
     else:
-        logger.info("Continue level.")
+        image = take_screenshot_of_desktop_using_PIL(window_x=x, window_y=y,
+                                                     relative_crop_box=(210, 620, 210 + 200, 620 + 50))
+        f = image_diff(global_configs.special_event_image, image)
+        logger.debug("Image diff result for level up events 2:{}.".format(f))
+        if f > 0.7:
+            logger.info("Trigger level UP.")
+            # Have special event
+            logger.debug("Set cursor in {}, {}.".format(x + 250, y + 640))
+            MouseAction.click_with_delay(x + 250, y + 640)
+            logger.debug("Finish click.")
+            time.sleep(4)
+        else:
+            logger.info("No level up, continue.")
 
+    # Jump time
     if jump_flag:
         logger.info("Jump time start.")
         KeyboardAction.press_and_release(0x54)

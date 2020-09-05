@@ -1,5 +1,6 @@
 .idea/
 log/
+temp/
 place_cursor.py
 take_screenshot.py
 image_process.py
