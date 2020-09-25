@@ -1,4 +1,8 @@
 import logging, logging.handlers
+import os
+
+if not os.path.exists("log"):
+    os.mkdir("log")
 
 logger = logging.getLogger("Runtime")
 logger.setLevel(level=logging.DEBUG)
