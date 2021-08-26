@@ -1,7 +1,5 @@
-import win32gui, win32api, win32con, win32ui
+import win32gui, win32con, win32ui
 from PIL import Image, ImageGrab
-
-import global_configs
 
 
 def take_screenshot_of_program_using_win32api(hwnd, save_name):

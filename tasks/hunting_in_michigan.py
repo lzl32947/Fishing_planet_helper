@@ -1,19 +1,13 @@
-import sys
 import time
 
-import win32api
-import win32con
 import win32gui
-from PIL import Image, ImageGrab
 
 from dependence.utils.keyboard_util import KeyboardAction
 from log import logger
-import global_configs
-from dependence.utils.image_process_util import crop_screenshot_by_tuple, image_diff, rgb2grey
+from configs import global_configs
+from dependence.utils.image_process_util import image_diff, rgb2grey
 from dependence.utils.mouse_util import MouseAction
-from dependence.utils.screenshot_util import take_screenshot_of_program_using_win32api, \
-    take_screenshot_of_desktop_using_PIL
-from gui.hwnd_select_gui import show_all_hwnd_select_gui
+from dependence.utils.screenshot_util import take_screenshot_of_desktop_using_PIL
 
 
 def run():

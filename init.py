@@ -1,4 +1,4 @@
-import global_configs
+from configs import global_configs
 from PIL import Image
 
 from dependence.utils import hwnd_util
@@ -25,22 +25,21 @@ def init_ram():
     global_configs.digit_9_image = Image.open("image/distance/9_grey.png")
 
 
+def init_config():
+    init_ram()
+    logger.info("Image init complete.")
+    hwnd = show_all_hwnd_select_gui()
+    if hwnd is None:
+        raise RuntimeError("No hWnd Selected.")
+    global_configs.hwnd = hwnd
+    x0, y0, x1, y1 = hwnd_util.get_window_position(hwnd)
+    global_configs.windows_x = x0
+    global_configs.windows_y = y0
+    global_configs.windows_width = x1 - x0
+    global_configs.windows_height = y1 - y0
 
-
-init_ram()
-logger.info("Image init complete.")
-hwnd = show_all_hwnd_select_gui()
-if hwnd is None:
-    raise RuntimeError("No hWnd Selected.")
-global_configs.hwnd = hwnd
-x0, y0, x1, y1 = hwnd_util.get_window_position(hwnd)
-global_configs.windows_x = x0
-global_configs.windows_y = y0
-global_configs.windows_width = x1 - x0
-global_configs.windows_height = y1 - y0
-
-logger.info("Configs init complete.")
-logger.info(
-    "Application location:{}, {}, {}, {}.".format(global_configs.windows_x, global_configs.windows_y,
-                                                  global_configs.windows_x + global_configs.windows_width,
-                                                  global_configs.windows_y + global_configs.windows_height))
+    logger.info("Configs init complete.")
+    logger.info(
+        "Application location:{}, {}, {}, {}.".format(global_configs.windows_x, global_configs.windows_y,
+                                                      global_configs.windows_x + global_configs.windows_width,
+                                                      global_configs.windows_y + global_configs.windows_height))
