@@ -1,10 +1,10 @@
-# Fishing planet helper
+# Fishing planet helper (Outdated)
 
 This project is a script of fishing planet based on python3, and aims to skip the tedious upgrade process and upgrade to a higher level as soon as possible to unlock fishing gear, so as to get a better game experience.
 
 This project is only recommended for players who have a python program foundation.
 
-
+(Notice that part of this Readme is missing due to translation, for full version please check the [Chinese version](Readme.md))
 
 ## Dependence packages:
 ```
